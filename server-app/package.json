@@ -13,14 +13,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/coingecko-api": "^1.0.6",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^16.11.12",
+    "@types/socket.io": "^3.0.2",
     "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   },
   "dependencies": {
+    "coingecko-api": "^1.0.10",
     "fastify": "^3.24.1",
+    "mongoose": "^6.1.1",
+    "socket.io": "^4.4.0",
     "undici": "^4.11.3"
   }
 }
