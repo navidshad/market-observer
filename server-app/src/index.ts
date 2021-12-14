@@ -3,9 +3,17 @@ import { Server, Socket } from "socket.io";
 import ioServer from "./common/services/socket";
 
 const httpServer = createServer();
-const io = new Server(httpServer, {});
+const io = new Server(httpServer, {
+	cors: {
+		origin: "*",
+		methods: ["GET", "POST"]
+	}
+});
 
-io.on("connection", (socket: Socket) => { });
+io.on("connection", (socket: Socket) => {
+	console.log('Someone connected');
+});
+
 ioServer.setNewServer(io);
 
 // import handlers

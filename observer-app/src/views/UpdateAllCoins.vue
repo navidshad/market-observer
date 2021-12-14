@@ -3,10 +3,15 @@
     class="flex justify-center items-center"
     :style="{ width: '100vw', height: '100vh' }"
   >
-    <div class="w-64">
+    <div>
+      <h1 class="text-2xl">Markt Observer</h1>
       <h3>Before start trading you have to update all coins data.</h3>
-      <br />
-      <BaseButton variant="primary">Update</BaseButton>
+
+      <hr class="my-4" />
+      <div class="flex items-center">
+        <BaseButton variant="success">Update</BaseButton>
+        <p class="mx-4">{{}}</p>
+      </div>
     </div>
   </div>
 </template>
