@@ -5,9 +5,8 @@
   >
     <div class="w-64">
       <h3>Before start trading you have to update all coins data.</h3>
-      <br>
-      <b-button>Update</b-button>
-      <b-button variant="danger">Button</b-button>
+      <br />
+      <BaseButton variant="primary">Update</BaseButton>
     </div>
   </div>
 </template>

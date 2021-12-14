@@ -1,30 +1,18 @@
 <template>
-  <button class="bg-">
+  <b-button v-bind="$props">
     <template v-if="!loading">
       <slot>{{ label }}</slot>
     </template>
 
-    <span v-else>Plz waite...</span>
-  </button>
+    <b-spinner v-else small>Plz waite...</b-spinner>
+  </b-button>
 </template>
 
 <script lang="ts">
 import { Options, Vue, prop } from "vue-class-component";
 
-type Color =
-  | "primary"
-  | "secondary"
-  | "sucess"
-  | "danger"
-  | "warning"
-  | "info"
-  | "";
-
 class Props {
-  label = prop<string>({ default: "" });
   loading = prop<boolean>({ default: false });
-  size = prop<"sm" | "md">({ default: "md" });
-  type = prop<Color>({});
 }
 
 @Options({
