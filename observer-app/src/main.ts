@@ -5,10 +5,10 @@ import router from './router'
 import store from './store'
 
 import bootstrap from './plugins/bootstrap'
+import socketio from './plugins/socketio';
 import components from './components/components'
 
 import './assets/tailwind.css';
-import './plugins/socketio';
 
 
 const app = createApp(App);
@@ -16,6 +16,7 @@ const app = createApp(App);
 app
 	.use(store)
 	.use(router)
+	.use(socketio)
 	.use(bootstrap)
 	.use(components)
 	.mount('#app')

@@ -1,8 +1,23 @@
 import { SERVER_ADDRESS } from "@/config/links";
-import { io } from "socket.io-client";
+import { io as IO, Socket } from "socket.io-client";
 
-const socket = io(SERVER_ADDRESS);
+class SocketController {
 
-export default {
-	socket
+	private static instance: SocketController;
+
+	static getInstance() {
+		if (!this.instance) {
+			this.instance = new SocketController()
+			return this.instance;
+		}
+		else return this.instance;
+	}
+
+	io!: Socket;
+
+	install() {
+		this.io = IO(SERVER_ADDRESS);
+	}
 }
+
+export default SocketController.getInstance();

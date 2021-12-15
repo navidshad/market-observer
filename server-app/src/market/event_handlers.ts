@@ -1,5 +1,25 @@
-import ioServer from "../common/services/socket";
+import { Socket } from "socket.io";
+import { GetAllCoinResponse } from "./types";
 
-ioServer.on('market-getAllCoins', async (socket) => {
+export default (io: Socket) => {
 
-})
+	io.on('market-getAllCoins', async (socket) => {
+
+		let res: GetAllCoinResponse = {
+			status: 'pending',
+			progressMessage: 'Getting market data',
+		}
+
+		io.emit('market-getAllCoins', res);
+
+		setTimeout(() => {
+			res = {
+				status: 'success',
+				progressMessage: 'done'
+			}
+			
+			io.emit('market-getAllCoins', res);
+		}, 3000)
+
+	})
+}

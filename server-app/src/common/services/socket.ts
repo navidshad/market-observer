@@ -2,14 +2,14 @@ import { Server, Socket } from "socket.io";
 
 class IoServer {
 
-	private io!: Server;
+	private io?: Server;
 
 	get server() {
 		return this.io;
 	}
 
 	on(event: string, handler: (socket: Socket) => void) {
-		this.server.on(event, handler);
+		this.server!.on(event, handler);
 	}
 
 	setNewServer(server: Server) {
