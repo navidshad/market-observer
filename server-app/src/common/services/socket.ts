@@ -1,5 +1,8 @@
 import { Server, Socket } from "socket.io";
 
+// Modules events
+import marketSocketHandler from '../../market/events';
+
 class SockerAdapter {
 
 	private io?: Server;
@@ -12,8 +15,18 @@ class SockerAdapter {
 		this.server!.on(event, handler);
 	}
 
-	setNewServer(server: Server) {
-		this.io = server
+	createSocketServer(httpServer: any) {
+		this.io = new Server(httpServer, {
+			cors: {
+				origin: "*",
+				methods: ["GET", "POST"]
+			}
+		});
+
+		this.io.on("connection", (socket: Socket) => {
+			console.log('Someone connected');
+			marketSocketHandler(socket);
+		});
 	}
 }
 

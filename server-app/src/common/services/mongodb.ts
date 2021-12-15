@@ -1,12 +1,19 @@
-import mongoose, { mongo, Schema } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
+import { MONGODB_PATH } from '../../config';
+import { MarketCoinSchema } from '../../market/schemas';
 import { MarketCoin } from '../../market/types';
 
 class MongoAdapter {
 
-	coins = mongoose.model('coins', new Schema<MarketCoin>({}))
+	private connection!: mongoose.Connection;
+	coins!: Model<MarketCoin>;
 
 	async connect() {
-		return mongoose.connect(MONGODB_PATH);
+		// mongoose.set('debug', true);
+		this.connection = await mongoose.createConnection(MONGODB_PATH);
+
+		// Add shcemas
+		this.coins = this.connection.model('coins', MarketCoinSchema);
 	}
 
 }

@@ -7,40 +7,50 @@ export default (io: Socket) => {
 
 	io.on('market-getAllCoins', async (socket) => {
 
-		let res: GetAllCoinResponse = {
-			status: 'faild',
-			progressMessage: 'Getting market data',
-		}
-
-		io.emit('market-getAllCoins', res);
+		io.emit('market-getAllCoins', <GetAllCoinResponse>{
+			status: 'pending',
+			progressMessage: 'Getting new data',
+		});
 
 		// Download new coin list
-		let list = await getAllCoins((log) => {
+		await getAllCoins((log) => {
 			io.emit('market-getAllCoins', <GetAllCoinResponse>{
 				status: 'pending',
 				progressMessage: log,
 			});
-		}).catch(e => {
-			io.emit('market-getAllCoins', <GetAllCoinResponse>{
-				status: 'faild',
-				progressMessage: e,
-			});
-
-			return [];
 		})
-
-		// Store on database
-		mongoAdapter.coins.create(list)
 			.then(_ => {
 				io.emit('market-getAllCoins', <GetAllCoinResponse>{
 					status: 'success',
 					progressMessage: 'Coins data updated',
 				});
-			}).catch(e => {
+			})
+			.catch(e => {
 				io.emit('market-getAllCoins', <GetAllCoinResponse>{
 					status: 'faild',
-					progressMessage: 'Database error:' + e,
+					progressMessage: e,
 				});
+
+				return [];
 			})
+
+		// Store on database
+		// io.emit('market-getAllCoins', <GetAllCoinResponse>{
+		// 	status: 'pending',
+		// 	progressMessage: 'Store on databsa',
+		// });
+
+		// await mongoAdapter.coins.create(list)
+		// 	.then(_ => {
+		// 		io.emit('market-getAllCoins', <GetAllCoinResponse>{
+		// 			status: 'success',
+		// 			progressMessage: 'Coins data updated',
+		// 		});
+		// 	}).catch(e => {
+		// 		io.emit('market-getAllCoins', <GetAllCoinResponse>{
+		// 			status: 'faild',
+		// 			progressMessage: 'Database error:' + e,
+		// 		});
+		// 	})
 	})
 }
