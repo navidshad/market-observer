@@ -1,5 +1,5 @@
 import Coingecko from 'coingecko-api';
-import { MarketCoin } from '../common/types/market';
+import { MarketCoin } from './types';
 
 let client = new Coingecko();
 
@@ -18,7 +18,7 @@ export const getAllCoins = async (onProgress: (log: string) => void) => {
 	let list: Array<MarketCoin> = [];
 
 	for (let page = 0; page < totalPages; page++) {
-		
+
 		onProgress(`Getting coins ${page}/${totalPages}`,)
 
 		await client.coins.all({
@@ -27,14 +27,15 @@ export const getAllCoins = async (onProgress: (log: string) => void) => {
 		}).then(res => {
 
 			if (res.code != 200) {
-				onProgress(`Error on getting coins ${page}/${totalPages}`,)
-				throw res;
+				throw `Error on getting coins ${page}/${totalPages}: ${res.data}`				
 			} else {
 				let pageContent = JSON.parse(res.data) as Array<MarketCoin>;
 				list.concat(pageContent);
 			}
 
-		})
+		});
 
 	}
+
+	return list;
 }

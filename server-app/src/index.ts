@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import ioServer from "./common/services/socket";
-import marketSocketHandler from './market/event_handlers';
+import marketSocketHandler from './market/events';
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -13,7 +13,6 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket: Socket) => {
 	console.log('Someone connected');
-
 	marketSocketHandler(socket);
 });
 
@@ -22,5 +21,5 @@ io.on("connection", (socket: Socket) => {
 ioServer.setNewServer(io);
 
 httpServer.listen(3000, () => {
-	console.log('Server is live');
+	console.log('Server is live on port 3000');
 });

@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 
-class IoServer {
+class SockerAdapter {
 
 	private io?: Server;
 
@@ -17,6 +17,5 @@ class IoServer {
 	}
 }
 
-let ioServer = new IoServer();
-
-export default ioServer;
+let sockeradApter = new SockerAdapter();
+export default sockeradApter;
