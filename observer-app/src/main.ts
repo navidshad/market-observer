@@ -9,6 +9,7 @@ import socketio from './plugins/socketio';
 import components from './components/components'
 
 import './assets/tailwind.css';
+import './assets/style.scss';
 
 
 const app = createApp(App);
