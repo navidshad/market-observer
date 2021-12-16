@@ -6,7 +6,7 @@
       </div>
 
       <div>
-        <CoinsFilterComponent />
+        <CoinsFilterComponent v-model:filters="groupForm.filters" />
       </div>
     </div>
     <div class="bd-content col-md-9 col-xl-8 col-12 pb-md-3 pl-md-5">
@@ -25,7 +25,13 @@ import CoinsFilterComponent from "@/components/partial/CoinsFilter.vue";
     CoinsFilterComponent,
   },
 })
-export default class CoinGroupPage extends Vue {}
+export default class CoinGroupPage extends Vue {
+
+  groupForm = {
+    filters: [],
+  }
+
+}
 </script>
 
 <style>

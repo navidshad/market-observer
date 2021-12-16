@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(filter, i) in filters" :key="i" class="my-4">
+  <div v-for="(filter, i) in tempFilters" :key="i" class="my-4">
     <!-- PROPERTIES -->
     <div class="flex justify-between my-2">
       <select name="filter" v-model="filter['property']">
@@ -18,13 +18,13 @@
 
     <!-- EVALEUATOR -->
     <div class="flex my-2">
-      <!-- FROM -->
-      <select name="from" class="w-32" v-model="filter.from.sym">
+      <!-- operator1 -->
+      <select name="operator1" class="w-32" v-model="filter.operator1.sym">
         <option
-          v-for="(equalator, i2) in equalators"
+          v-for="(equalator, i2) in comparisonOperators"
           :key="i2"
           :value="equalator.sym"
-          :selected="filter.from.sym == equalator.sym"
+          :selected="filter.operator1.sym == equalator.sym"
         >
           {{ equalator.label }}
         </option>
@@ -32,18 +32,18 @@
       <input
         type="number"
         class="border-solid border-2 border-gray-100"
-        v-model="filter.from.value"
+        v-model="filter.operator1.value"
       />
     </div>
 
-    <!-- TO -->
+    <!-- operator2 -->
     <div class="flex">
-      <select name="to" class="w-32" v-model="filter.to.sym">
+      <select name="operator2" class="w-32" v-model="filter.operator2.sym">
         <option
-          v-for="(equalator, i2) in equalators"
+          v-for="(equalator, i2) in comparisonOperators"
           :key="i2"
           :value="equalator.sym"
-          :selected="filter.to.sym == equalator.sym"
+          :selected="filter.operator2.sym == equalator.sym"
         >
           {{ equalator.label }}
         </option>
@@ -51,7 +51,7 @@
       <input
         type="number"
         class="border-solid border-2 border-gray-100"
-        v-model="filter.to.value"
+        v-model="filter.operator2.value"
       />
     </div>
 
@@ -62,28 +62,51 @@
 
 <script>
 export default {
+  props: {
+    filters: {},
+  },
   data() {
     return {
-      filters: [],
+      tempFilters: [],
     };
+  },
+
+  watch: {
+    filters: {
+      immediate: true,
+      deep: true,
+      handler(newVal) {
+        debugger
+        if (newVal && newVal.length) {
+          this.tempFilters = newVal;
+        }
+      },
+    },
+
+    tempFilters: {
+      deep: true,
+      handler() {
+        this.$emit("update:filters", this.tempFilters);
+      },
+    },
   },
 
   methods: {
     addFilter() {
-      this.filters.push({
-        property: "",
-        from: { sym: "$gt", value: 0 },
-        to: { sym: "$lt", value: 0 },
+      this.tempFilters.push({
+        property: this.properties[0],
+        operator1: { sym: "$gt", value: 1 },
+        operator2: { sym: "$lt", value: 0 },
       });
     },
 
     removeFilter(index) {
-      this.filters.splice(index, 1);
+      this.tempFilters.splice(index, 1);
     },
   },
 
   computed: {
-    equalators() {
+    comparisonOperators() {
       return [
         { label: "Greater than", sym: "$gt" },
         { label: "Equal or greater than", sym: "$gte" },
