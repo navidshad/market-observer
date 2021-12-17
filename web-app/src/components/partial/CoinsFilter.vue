@@ -76,7 +76,6 @@ export default {
       immediate: true,
       deep: true,
       handler(newVal) {
-        debugger
         if (newVal && newVal.length) {
           this.tempFilters = newVal;
         }

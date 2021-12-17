@@ -1,5 +1,5 @@
 <template>
-  <b-button v-bind="$props">
+  <b-button v-bind="$props" :class="[{'btn-block':block}]">
     <template v-if="!loading">
       <slot>{{ label }}</slot>
     </template>
@@ -13,12 +13,9 @@ import { Options, Vue, prop } from "vue-class-component";
 
 class Props {
   loading = prop<boolean>({ default: false });
+  block = prop<boolean>({default:false})
 }
 
-@Options({
-  props: {
-    msg: String,
-  },
-})
+@Options({})
 export default class HelloWorld extends Vue.with(Props) {}
 </script>

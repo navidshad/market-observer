@@ -5,7 +5,15 @@ import { getAllCoins } from "./collector";
 
 export default (io: Socket) => {
 
-	io.on('market-getAllCoins', async (socket) => {
+	io.on("market-getbyfilter", (query: object) => {
+		mongoAdapter.coins.find(query).exec()
+			.then(docs => {
+				let coins = docs.map(doc => doc.toObject())
+				io.emit("market-getbyfilter", coins);
+			})
+	})
+
+	io.on('market-getAllCoins', async () => {
 
 		io.emit('market-getAllCoins', <GetAllCoinResponse>{
 			status: 'pending',
@@ -33,24 +41,5 @@ export default (io: Socket) => {
 
 				return [];
 			})
-
-		// Store on database
-		// io.emit('market-getAllCoins', <GetAllCoinResponse>{
-		// 	status: 'pending',
-		// 	progressMessage: 'Store on databsa',
-		// });
-
-		// await mongoAdapter.coins.create(list)
-		// 	.then(_ => {
-		// 		io.emit('market-getAllCoins', <GetAllCoinResponse>{
-		// 			status: 'success',
-		// 			progressMessage: 'Coins data updated',
-		// 		});
-		// 	}).catch(e => {
-		// 		io.emit('market-getAllCoins', <GetAllCoinResponse>{
-		// 			status: 'faild',
-		// 			progressMessage: 'Database error:' + e,
-		// 		});
-		// 	})
 	})
 }
