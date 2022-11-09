@@ -23,7 +23,7 @@
 
       <div class="flex justify-between">
         <span>price range 24</span>
-        <span class="text-pink-600 font-bold"
+        <span class="text-yellow-600 font-bold"
           >{{ coin["low_24h"] }} - {{ coin["high_24h"] }}</span
         >
       </div>
@@ -34,14 +34,24 @@
       </div>
     </section>
 
-    <h1 class="text-2xl mt-8">{{ coin.current_price }} USD</h1>
+    <h1 class="text-2xl my-8">{{ coin.current_price }} USD</h1>
+
+    <div :id="chartid"></div>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   props: {
     coin: {},
+  },
+
+  data() {
+    return {
+      chartid: "chart-" + this.coin.symbol,
+      chartInstance: null,
+    };
   },
 
   computed: {
@@ -73,9 +83,32 @@ export default {
     },
   },
 
+  mounted() {
+    this.loadChart();
+  },
+
   methods: {
     normalizeTitle(str) {
       return str.replaceAll("_", " ");
+    },
+    loadChart() {
+      this.chartInstance = new TradingView.widget({
+        width: 300,
+        height: 250,
+        symbol: `${this.coin.symbol}USDT`,
+        interval: "3",
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "3",
+        locale: "en",
+        toolbar_bg: "#f1f3f6",
+        enable_publishing: false,
+        hide_top_toolbar: true,
+        hide_legend: true,
+        allow_symbol_change: true,
+        save_image: false,
+        container_id: this.chartid,
+      });
     },
   },
 };

@@ -64,6 +64,7 @@ export default class CoinGroupPage extends Vue {
   }
 
   search() {
+    this.coins = [];
     this.pending = true;
     let query: any = {};
 
